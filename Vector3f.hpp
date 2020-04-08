@@ -175,3 +175,16 @@ inline Vector3f& Vector3f::operator/=(const float t)
 	v[2] *= k;
 	return *this;
 }
+
+#if __has_include("Color.hpp")
+#include "Color.hpp"
+
+inline Color Vector3f_to_Color (const Vector3f& t, const unsigned char a)
+{
+	return Color(	static_cast<unsigned char>(t[0] * 255.0f), 
+					static_cast<unsigned char>(t[1] * 255.0f),
+					static_cast<unsigned char>(t[2] * 255.0f),
+					a);
+} 
+
+#endif

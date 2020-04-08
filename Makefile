@@ -1,4 +1,4 @@
-source = Graphics.cpp Main.cpp Input.cpp
+source = *.cpp
 bin = raytrace
 
 CC = g++
@@ -6,12 +6,12 @@ LIBRARY = -lSDL2 -lSDL2_image -lm
 CFLAGS = 
 INCLUDE = .
 
-$(bin) : $(source)
+$(bin) : $(source) *.hpp
 	$(CC) $(CFLAGS) -B$(INCLUDE) -o$(bin) $(source) $(LIBRARY)
 
 clean:
-	rm *.o
 	rm $(bin)
+	rm *.o
 
 run:
 	./$(bin)

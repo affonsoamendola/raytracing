@@ -6,14 +6,14 @@ class Ray
 {
 public:
 	Ray() {}
-	Ray(const Vector3f& _origin, const Vector3f& _direction) { v3f_origin = _origin; v3f_direction = _direction; }
+	Ray(const Vector3f& _origin, const Vector3f& _direction) { m_origin = _origin; m_direction = _direction; }
 	//Always use unit vectors for _direction.
 
-	inline Vector3f origin() const 		{ return v3f_origin; } 
-	inline Vector3f direction() const 	{ return v3f_direction; } 
+	inline Vector3f origin() const 		{ return m_origin; } 
+	inline Vector3f direction() const 	{ return m_direction; } 
 
-	inline Vector3f propagate(float t) const { return v3f_origin + t * v3f_direction; }
+	inline Vector3f propagate(float t) const { return m_origin + t * m_direction; }
 
-	Vector3f v3f_origin;
-	Vector3f v3f_direction;
+	Vector3f m_origin;
+	Vector3f m_direction;
 };
