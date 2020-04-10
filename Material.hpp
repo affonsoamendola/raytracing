@@ -1,5 +1,8 @@
 #pragma once
 
+#include "Vector3f.hpp"
+#include "Ray.hpp"
+
 #include "Hitable.hpp"
 #include "Random_Generator.hpp"
 
@@ -36,12 +39,19 @@ class Material
 {
 public:
 	virtual bool Scatter(const Ray& ray_in, const Hit_Record& record, Vector3f& attenuation, Ray& ray_out) const = 0;	
+
+	Vector3f m_albedo;
+	float m_fuzziness;
+	float m_refraction_index;
 };
 
 class Lambertian : public Material
 {
 public:
-	Lambertian(const Vector3f& a) : m_albedo(a) {}
+	Lambertian(const Vector3f& a)
+	{
+		m_albedo = a;
+	}
 
 	virtual bool Scatter(const Ray& ray_in, const Hit_Record& record, Vector3f& attenuation, Ray& ray_out) const
 	{
@@ -50,61 +60,63 @@ public:
 		attenuation = m_albedo;
 		return true;
 	}
-
-	Vector3f m_albedo;
 };
 
 class Metal : public Material
 {
 public:
-	Metal(const Vector3f& a, float fuzziness) : m_albedo(a), m_fuzziness(fuzziness) {}
+	Metal(const Vector3f& a, float fuzziness) 
+	{
+		m_albedo = a;
+		m_fuzziness = fuzziness;
+	}
 
 	virtual bool Scatter(const Ray& ray_in, const Hit_Record& record, Vector3f& attenuation, Ray& ray_out) const
 	{
-		Vector3f reflected = Reflect(ray_in.direction().unit(), record.m_normal);
+		Vector3f reflected = Reflect(ray_in.m_direction.unit(), record.m_normal);
 		ray_out = Ray(record.m_hitpoint, reflected + m_fuzziness * random_unit_sphere_point());
 		attenuation = m_albedo;
 
-		return (dot(ray_out.direction(), record.m_normal) > 0);
+		return (dot(ray_out.m_direction, record.m_normal) > 0);
 	}
-
-	Vector3f m_albedo;
-	float m_fuzziness;
 };
 
 class Dieletric : public Material
 {
 public:
-	Dieletric(float refraction_index) : m_refraction_index(refraction_index) {}
+	Dieletric(float refraction_index)
+	{
+		m_refraction_index = refraction_index;
+	}
 
 	virtual bool Scatter(const Ray& ray_in, const Hit_Record& record, Vector3f& attenuation, Ray& ray_out) const
 	{
 		Vector3f outward_normal;
-		Vector3f reflected = Reflect(ray_in.direction(), record.m_normal);
+		Vector3f reflected = Reflect(ray_in.m_direction, record.m_normal);
 
 		float ni_over_nt;
 
 		attenuation = Vector3f(1.0, 1.0, 1.0);
 
-		Vector3f refracted;
+		Vector3f refracted(0., 0., 0.);
 
 		float reflect_prob;
 		float cosine;
 
-		if(dot(ray_in.direction(), record.m_normal) > 0.)
+		if(dot(ray_in.m_direction, record.m_normal) > 0.)
 		{
 			outward_normal = -record.m_normal;
 			ni_over_nt = m_refraction_index;
-			cosine = m_refraction_index * dot(ray_in.direction(), record.m_normal) / ray_in.direction().length();
+			cosine = m_refraction_index * dot(ray_in.m_direction, record.m_normal) / ray_in.m_direction.length();
 		}
 		else
 		{
 			outward_normal = record.m_normal;
 			ni_over_nt = 1.0 / m_refraction_index;
-			cosine = -dot(ray_in.direction(), record.m_normal) / ray_in.direction().length();
+			cosine = -dot(ray_in.m_direction, record.m_normal) / ray_in.m_direction.length();
 		}
 
-		if(Refract(ray_in.direction(), outward_normal, ni_over_nt, refracted))
+		if(Refract(ray_in.m_direction, outward_normal, ni_over_nt, refracted))
 		{
 			reflect_prob = Schlick(cosine, m_refraction_index);
 		}
@@ -125,6 +137,4 @@ public:
 
 		return true;
 	}
-
-	float m_refraction_index;
 };

@@ -3,13 +3,16 @@
 class Color
 {
 public:
-	unsigned char r = 0;
-	unsigned char g = 0;
-	unsigned char b = 0;
-	unsigned char a = 255;
+	unsigned char m_r = 0;
+	unsigned char m_g = 0;
+	unsigned char m_b = 0;
+	unsigned char m_a = 255;
 
-	Color(unsigned char t_r = 0, unsigned char t_g = 0, unsigned char t_b = 0) : r(t_r), g(t_g), b(t_b) {}
-	Color(unsigned char t_r, unsigned char t_g, unsigned char t_b, unsigned char t_a) : r(t_r), g(t_g), b(t_b), a(t_a) {}
+	Color(unsigned char r = 0, unsigned char g = 0, unsigned char b = 0) 
+		: m_r(r), m_g(g), m_b(b) {}
+		
+	Color(unsigned char r, unsigned char g, unsigned char b, unsigned char a) 
+		: m_r(r), m_g(g), m_b(b), m_a(a) {}
 };
 
 //Some default colors

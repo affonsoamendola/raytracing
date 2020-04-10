@@ -6,11 +6,9 @@ class Ray
 {
 public:
 	Ray() {}
-	Ray(const Vector3f& _origin, const Vector3f& _direction) { m_origin = _origin; m_direction = _direction; }
+	Ray(const Vector3f& _origin, const Vector3f& _direction) :
+		m_origin(_origin), m_direction(_direction) {}
 	//Always use unit vectors for _direction.
-
-	inline Vector3f origin() const 		{ return m_origin; } 
-	inline Vector3f direction() const 	{ return m_direction; } 
 
 	inline Vector3f propagate(float t) const { return m_origin + t * m_direction; }
 

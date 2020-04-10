@@ -2,11 +2,11 @@
 
 #include <vector>
 
-#include "SDL2/SDL.h"
-#include "SDL2/SDL_render.h"
-#include "SDL2/SDL_image.h"
-
-#include "Color.hpp"
+class Font;
+class SDL_Window;
+class SDL_Renderer;
+class SDL_Texture;
+class Texture;
 
 class Graphics
 {
@@ -26,6 +26,9 @@ public:
 
 	bool m_show_mouse = true;
 
+	Font* m_debug_font;
+	Font* m_debug_font_tiny;
+
 	SDL_Window* m_window; //SDL window of the game.
 	SDL_Renderer* m_renderer; //SDL renderer of the game.
 
@@ -36,12 +39,19 @@ public:
 
 	void update();
 	void render();
+	void update_screen_surface();
 
 	void set_pixel(unsigned int x, unsigned int y, Color color);
 	void get_pixel(unsigned int x, unsigned int y);
+
+	void blit_texture(const Texture* to_render, const int src_x, const int src_y, const int src_w, const int src_h, 
+												const int dst_x, const int dst_y);
+
+	void draw_char(unsigned int x, unsigned int y, Font* font, Color color, char character);
+	void draw_string(unsigned int x, unsigned int y, Font* font, Color color, const char* char_string, ...);
 
 	void clear_screen();
 	void clear_screen(Color color);
 };
 
-void E_Draw();
+void e_draw();

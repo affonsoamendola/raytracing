@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Camera.hpp"
-#include "Ray.hpp"
+#include "Vector3f.hpp"
 
+class Ray;
 class Material;
 
 struct Hit_Record
@@ -13,36 +13,13 @@ struct Hit_Record
 	Material * m_material;
 };
 
-inline Vector3f RotateY(Vector3f point, const float& theta)
-{
-	return Vector3f(point[0] * cos(theta) - point[2] * sin(theta), point[1], point[2] * cos(theta) + point[0] * sin(theta));
-}
-
-inline Vector3f RotateX(Vector3f point, const float& theta)
-{
-	return Vector3f(point[0], point[1] * cos(theta) - point[2] * sin(theta), point[2] * cos(theta) + point[1] * sin(theta));
-}
-
 class Hitable
 {
 public:
-	virtual bool Hit(const Camera& cam, const Ray& r, float parameter_min, float parameter_max, Hit_Record& record) const = 0;
-	
-	inline Vector3f Translate(const Vector3f& value, const Vector3f& amount) const
-	{
-		return value + amount;
-	}
+	virtual bool Hit(const Ray& r, float parameter_min, float parameter_max, Hit_Record& record) const = 0;
 
-	inline Vector3f Rotate(const Vector3f& value, const float& thetaY, const float& thetaX) const
-	{
-		Vector3f holder;
-
-		holder = RotateY(value, thetaY);
-		holder = RotateX(holder, thetaX);
-
-		return holder;
-	}
-
-	Vector3f m_position;
+	Vector3f m_world_position;
+	Vector3f m_local_position;
+	Material * m_material;
 };
 

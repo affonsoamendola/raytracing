@@ -3,7 +3,7 @@ bin = raytrace
 
 CC = g++
 LIBRARY = -lSDL2 -lSDL2_image -lm
-CFLAGS = 
+CFLAGS = -g -Ofast
 INCLUDE = .
 
 $(bin) : $(source) *.hpp
@@ -11,7 +11,6 @@ $(bin) : $(source) *.hpp
 
 clean:
 	rm $(bin)
-	rm *.o
-
+	
 run:
 	./$(bin)

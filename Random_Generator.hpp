@@ -2,13 +2,15 @@
 
 #include <random>
 
-std::random_device rd;
-std::mt19937 gen(rd());
-std::uniform_real_distribution<float> dist(0.0f, 1.0f);
+#include "Vector3f.hpp"
+
+std::random_device g_rd;
+std::mt19937 g_gen(g_rd());
+std::uniform_real_distribution<float> g_dist(0.0f, 1.0f);
 
 inline float randf()
 {
-	return dist(gen);
+	return g_dist(g_gen);
 }
 
 Vector3f random_unit_sphere_point()

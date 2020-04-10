@@ -1,7 +1,5 @@
 #pragma once
 
-#include <memory>
-
 #include "SDL2/SDL.h"
 
 class Engine;
@@ -27,7 +25,9 @@ public:
 	void update();
 };
 
-void E_KeyDown(int scancode);
-void E_KeyUp(int scancode);
-void E_Quit();
+void e_on_mouse_movement(int mouse_x, int mouse_y);
+void e_on_key_held(const bool keys_down[284]);
+void e_on_key_down(int scancode);
+void e_on_key_up(int scancode);
+void e_quit();
 
